@@ -17,3 +17,14 @@ Run: `forge test --gas-report`
 ## To run a specific test
 RUN:`forge test --match-test {TESTNAME} -vvvv`
 EG: `forge test --match-test test_onlyOwner -vvvv`
+
+
+### Mine notes 
+With this data:
+
+  _recipient = 0x0000000000000000000000000000000000000005;
+  _sender = 0x0000000000000000000000000000000000000005;
+  _amount = 1666818;
+  _tier = 12742;
+  
+  testWhiteTranferAmountUpdate fails
