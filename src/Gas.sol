@@ -13,11 +13,11 @@ contract GasContract {
     }
 
     /// @dev this functions always returns true in test...
-    function checkForAdmin(address) external pure returns (bool admin_) {
+    function checkForAdmin(address) external pure returns (bool) {
         return true;
     }
 
-    function balanceOf(address _user) external view returns (uint256 balance_) {
+    function balanceOf(address _user) external view returns (uint256) {
         return balances[_user];
     }
 
@@ -43,10 +43,10 @@ contract GasContract {
 
     function whiteTransfer(address _recipient, uint256 _amount) external {
         lastSendAmount = _amount;
-        // ! check why can remove the 3
-        balances[msg.sender] = balances[msg.sender] - _amount;
-        balances[_recipient] = balances[_recipient] + _amount;
-
+        unchecked {
+            balances[msg.sender] -= _amount;
+            balances[_recipient] += _amount;
+        }
         emit WhiteListTransfer(_recipient);
     }
 
