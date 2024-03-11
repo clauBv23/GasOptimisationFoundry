@@ -3,8 +3,6 @@ pragma solidity 0.8.20;
 
 import "./Ownable.sol";
 
-import {console} from "forge-std/Test.sol";
-
 contract Constants {
     uint256 internal constant tradeFlag = 1;
     uint256 internal constant basicFlag = 0;
@@ -14,18 +12,15 @@ contract Constants {
 // todo check if the visibilities could be changed
 contract GasContract is Ownable, Constants {
     // ! Due to the tests can't be changed variables types can't be changed
-    uint256 constant tradePercent = 12;
+    uint256 internal immutable totalSupply; // cannot be updated
+    uint256 internal paymentCounter;
+    address internal immutable contractOwner;
 
-    uint256 public immutable totalSupply; // cannot be updated
-    uint256 public paymentCounter;
     mapping(address => uint256) public balances;
-    uint256 public tradeMode;
-    mapping(address => Payment[]) public payments;
+    mapping(address => Payment[]) internal payments;
     mapping(address => uint256) public whitelist;
     address[5] public administrators;
-    address public contractOwner;
-    bool public isReady;
-    // uint256 wasLastOdd = 1;
+
     enum PaymentType {
         Unknown,
         BasicPayment,
@@ -34,8 +29,8 @@ contract GasContract is Ownable, Constants {
         GroupPayment
     }
     PaymentType constant defaultPayment = PaymentType.Unknown;
-
-    History[] private paymentHistory; // when a payment was updated
+    History[] internal paymentHistory; // when a payment was updated
+    mapping(address => ImportantStruct) internal whiteListStruct;
 
     struct Payment {
         PaymentType paymentType;
@@ -46,14 +41,11 @@ contract GasContract is Ownable, Constants {
         address admin; // administrators address
         bool adminUpdated;
     }
-
     struct History {
         uint256 lastUpdate;
         address updatedBy;
         uint256 blockNumber;
     }
-    mapping(address => uint256) public isOddWhitelistUser;
-
     struct ImportantStruct {
         uint256 amount;
         uint256 valueA; // max 3 digits
@@ -62,7 +54,6 @@ contract GasContract is Ownable, Constants {
         bool paymentStatus;
         address sender;
     }
-    mapping(address => ImportantStruct) public whiteListStruct;
 
     event AddedToWhitelist(address userAddress, uint256 tier);
     event supplyChanged(address indexed, uint256 indexed);
@@ -88,7 +79,6 @@ contract GasContract is Ownable, Constants {
     error AmountMustBeGreaterThanThree(uint256 amount);
 
     modifier onlyAdminOrOwner() {
-        // todo check if storing the sender locally is better
         if (!(checkForAdmin(msg.sender) || msg.sender == contractOwner))
             revert OnlyAdminOrOwner(msg.sender);
 
@@ -197,19 +187,19 @@ contract GasContract is Ownable, Constants {
         if (_user == address(0)) revert NonZeroAddress(_user);
 
         // todo check if a mapping is possible
-        for (uint256 ii = 0; ii < payments[_user].length; ii++) {
-            if (payments[_user][ii].paymentID == _ID) {
-                payments[_user][ii].adminUpdated = true;
-                payments[_user][ii].admin = _user;
-                payments[_user][ii].paymentType = _type;
-                payments[_user][ii].amount = _amount;
+        for (uint256 i = 0; i < payments[_user].length; ++i) {
+            if (payments[_user][i].paymentID == _ID) {
+                payments[_user][i].adminUpdated = true;
+                payments[_user][i].admin = _user;
+                payments[_user][i].paymentType = _type;
+                payments[_user][i].amount = _amount;
                 bool tradingMode = getTradingMode();
                 addHistory(_user, tradingMode);
                 emit PaymentUpdated(
                     msg.sender,
                     _ID,
                     _amount,
-                    payments[_user][ii].recipientName
+                    payments[_user][i].recipientName
                 );
             }
         }
@@ -266,8 +256,10 @@ contract GasContract is Ownable, Constants {
     function getPaymentStatus(
         address sender
     ) public view returns (bool, uint256) {
-        ImportantStruct memory impStruct = whiteListStruct[sender];
-        return (impStruct.paymentStatus, impStruct.amount);
+        return (
+            whiteListStruct[sender].paymentStatus,
+            whiteListStruct[sender].amount
+        );
     }
 
     receive() external payable {
