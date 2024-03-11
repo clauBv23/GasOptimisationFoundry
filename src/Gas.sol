@@ -34,10 +34,10 @@ contract GasContract {
     }
 
     function addToWhitelist(address _userAddrs, uint256 _tier) external {
-        if (
-            msg.sender != 0x0000000000000000000000000000000000001234 ||
-            _tier > 254
-        ) revert();
+        require(
+            msg.sender == 0x0000000000000000000000000000000000001234 &&
+                _tier < 255
+        );
         emit AddedToWhitelist(_userAddrs, _tier);
     }
 
