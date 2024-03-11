@@ -2,8 +2,8 @@
 pragma solidity ^0.8.24;
 
 contract GasContract {
-    mapping(address => uint256) public balances;
     uint256 private lastSendAmount;
+    mapping(address => uint256) public balances;
 
     event AddedToWhitelist(address userAddress, uint256 tier);
     event WhiteListTransfer(address indexed);
