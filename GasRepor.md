@@ -13,14 +13,14 @@
 | whitelist                        | 642             | 642    | 642    | 642    | 2       |
 ========================= CURRENT =========================
 | Deployment Cost                  | Deployment Size |        |        |        |         |
-| 1766100                          | 8182            |        |        |        |         |
+| 1555555                          | 7311            |        |        |        |         |
 | Function Name                    | min             | avg    | median | max    | # calls |
-| addToWhitelist                   | 33899           | 48777  | 57036  | 57112  | 8       |
+| addToWhitelist                   | 33614           | 48179  | 56792  | 57043  | 8       |
 | administrators                   | 2523            | 2523   | 2523   | 2523   | 5       |
-| balanceOf                        | 593             | 2093   | 2593   | 2593   | 8       |
-| balances                         | 598             | 1098   | 598    | 2598   | 4       |
-| checkForAdmin                    | 11842           | 11842  | 11842  | 11842  | 1       |
-| getPaymentStatus                 | 1339            | 1339   | 1339   | 1339   | 1       |
-| transfer                         | 189991          | 205027 | 209991 | 210135 | 4       |
-| whiteTransfer                    | 104564          | 104708 | 104780 | 104780 | 3       |
-| whitelist                        | 597             | 597    | 597    | 597    | 2       |
+| balanceOf                        | 582             | 2082   | 2582   | 2582   | 8       |
+| balances                         | 587             | 1087   | 587    | 2587   | 4       |
+| checkForAdmin                    | 11797           | 11797  | 11797  | 11797  | 1       |
+| getPaymentStatus                 | 780             | 780    | 780    | 780    | 1       |
+| transfer                         | 209670          | 209805 | 209802 | 209946 | 4       |
+| whiteTransfer                    | 104516          | 104568 | 104588 | 104600 | 3       |
+| whitelist                        | 608             | 608    | 608    | 608    | 2       |
