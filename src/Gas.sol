@@ -22,7 +22,7 @@ contract GasContract {
     }
 
     /// @dev this functions always returns true in test...
-    function checkForAdmin(address _user) public pure returns (bool admin_) {
+    function checkForAdmin(address) public pure returns (bool admin_) {
         return true;
     }
 
@@ -34,7 +34,7 @@ contract GasContract {
     function transfer(
         address _recipient,
         uint256 _amount,
-        string calldata _name
+        string calldata
     ) public {
         balances[msg.sender] -= _amount;
         balances[_recipient] += _amount;
@@ -59,13 +59,11 @@ contract GasContract {
         emit WhiteListTransfer(_recipient);
     }
 
-    function getPaymentStatus(
-        address sender
-    ) public view returns (bool, uint256) {
+    function getPaymentStatus(address) public view returns (bool, uint256) {
         return (true, lastSendAmount);
     }
 
-    function whitelist(address) public view returns (uint256) {
+    function whitelist(address) public pure returns (uint256) {
         return 3;
     }
 }
